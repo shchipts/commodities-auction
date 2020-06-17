@@ -8,7 +8,8 @@
 
 (ns commodities-auction.auction-test
   (:require [clojure.test :refer :all]
-            [commodities-auction.auction :refer :all]))
+            [commodities-auction.auction :refer :all]
+            [utilities-clj.floating-point-comparison :refer :all]))
 
 ;;; tests
 
@@ -17,101 +18,198 @@
     (; Act
      let [auction1 (run {:c1 5 :c2 7 :c3 4}
                         {:m1 9 :m2 11}
-                        {:m1 {:c1 0 :c2 0 :c3 1}
-                         :m2 {:c1 0 :c2 1 :c3 0}})
+                        {:m1 {:c1 0 :c2 0 :c3 0.05}
+                         :m2 {:c1 0 :c2 0.05 :c3 0}})
           auction2 (run {:c1 4 :c2 2 :c3 5 :c4 3}
                         {:m1 7 :m2 4 :m3 6}
-                        {:m1 {:c1 11 :c2 13 :c3 12 :c4 11}
-                         :m2 {:c1 12 :c2 14 :c3 17 :c4 17}
-                         :m3 {:c1 10 :c2 11 :c3 14 :c4 13}})]
+                        {:m1 {:c1 0.647059 :c2 0.764706
+                              :c3 0.705882 :c4 0.647059}
+                         :m2 {:c1 0.705882 :c2 0.823529
+                              :c3 1 :c4 1}
+                         :m3 {:c1 0.588235 :c2 0.647059
+                              :c3 0.823529 :c4 0.764706}})]
 
       ; Assert
-      (is (= auction1
-             {:imports {:c1 [0 1 2 3 4 5 6 7 8 9]
-                        :c2 [0 0 1 2 3 4 5 6 6 7]
-                        :c3 [0 1 2 3 4 5 6 7 8 9]}
-              :markets {:m1 [4 4 5 6 7 8 9  10 11 12]
-                        :m2 [4 5 6 7 8 9 10 11 11 12]}}))
-      (is (= auction2
-             {:imports {:c1 [0 1 2]
-                        :c2 [0 0 1]
-                        :c3 [0 0 0]
-                        :c4 [0 0 0]}
-              :markets {:m1 [13 13 14]
-                        :m2 [15 15 16]
-                        :m3 [13 13 14]}})))))
+      (is (real= (get-in auction1 [:imports :c1])
+                 [0 0.05 0.1 0.15	0.2	0.25 0.3 0.35	0.4	0.45]))
+      (is (real= (get-in auction1 [:imports :c2])
+                 [0	0	0.05 0.1 0.15	0.2	0.25 0.3 0.3 0.35]))
+      (is (real= (get-in auction1 [:imports :c3])
+                 [0 0.05 0.1 0.15	0.2	0.25 0.3 0.35	0.4	0.45]))
+
+      (is (real= (get-in auction1 [:markets :m1])
+                 [0.2	0.2	0.25 0.3 0.35	0.4	0.45 0.5 0.55	0.6]))
+      (is (real= (get-in auction1 [:markets :m2])
+                 [0.2	0.25 0.3 0.35	0.4	0.45 0.5 0.55	0.55 0.6]))
+
+      (is (real= (get-in auction2 [:imports :c1])
+                 [0 0.058823529	0.117647059]))
+      (is (real= (get-in auction2 [:imports :c2])
+                 [0 0 0.058823529]))
+      (is (real= (get-in auction2 [:imports :c3])
+                 [0 0 0]))
+      (is (real= (get-in auction2 [:imports :c4])
+                 [0 0 0]))
+
+      (is (real= (get-in auction2 [:markets :m1])
+                 [0.764705882	0.764705882	0.823529412]))
+      (is (real= (get-in auction2 [:markets :m2])
+                 [0.882352941 0.882352941 0.941176471]))
+      (is (real= (get-in auction2 [:markets :m3])
+                 [0.764705882	0.764705882	0.823529412])))))
 
 (deftest surpluses
   (testing "with surpluses as outcomes"
     (; Act
      let [auction1 (run {:c1 5 :c2 7 :c3 4}
                         {:m1 9 :m2 11}
-                        {:m1 {:c1 0 :c2 0 :c3 1}
-                         :m2 {:c1 0 :c2 1 :c3 0}}
+                        {:m1 {:c1 0 :c2 0 :c3 0.05}
+                         :m2 {:c1 0 :c2 0.05 :c3 0}}
                         :summary)
           auction2 (run {:c1 5 :c2 7 :c3 4}
                         {:m1 9 :m2 11}
-                        {:m1 {:c1 2 :c2 4 :c3 5}
-                         :m2 {:c1 2 :c2 5 :c3 4}}
+                        {:m1 {:c1 0.1 :c2 0.2 :c3 0.25}
+                         :m2 {:c1 0.1 :c2 0.25 :c3 0.2}}
                         :summary)
           auction3 (run {:c1 3 :c2 4 :c3 1}
                         {:m1 9 :m2 11}
-                        {:m1 {:c1 2 :c2 1 :c3 3}
-                         :m2 {:c1 1 :c2 1 :c3 2}}
+                        {:m1 {:c1 0.1 :c2 0.05 :c3 0.15}
+                         :m2 {:c1 0.05 :c2 0.05 :c3 0.1}}
                         :summary)
           auction4 (run {:c1 5 :c2 4 :c3 7}
                         {:m1 9 :m2 11}
-                        {:m1 {:c1 4 :c2 9 :c3 5}
-                         :m2 {:c1 5 :c2 2 :c3 7}}
+                        {:m1 {:c1 0.2 :c2 0.45 :c3 0.25}
+                         :m2 {:c1 0.25 :c2 0.1 :c3 0.35}}
                         :summary)
+
           auction5 (run {:c1 4 :c2 2 :c3 5 :c4 3}
                         {:m1 7 :m2 4 :m3 6}
-                        {:m1 {:c1 11 :c2 13 :c3 12 :c4 11}
-                         :m2 {:c1 12 :c2 14 :c3 17 :c4 17}
-                         :m3 {:c1 10 :c2 11 :c3 14 :c4 13}}
+                        {:m1 {:c1 0.647058824 :c2 0.764705882
+                              :c3 0.705882353 :c4 0.647058824}
+                         :m2 {:c1 0.705882353 :c2 0.823529412
+                              :c3 1 :c4 1}
+                         :m3 {:c1 0.588235294 :c2 0.647058824
+                              :c3 0.823529412 :c4 0.764705882}}
                         :summary)]
 
       ; Assert
-      (is (= auction1
-             {:imports {:c1 9 :c2 7 :c3 9}
-              :markets {:m1 12 :m2 12}
-              :surplus {:m1 8 :m2 8}}))
+      (is (real= (get-in auction1 [:imports :c1])
+                 0.45))
+      (is (real= (get-in auction1 [:imports :c2])
+                 0.35))
+      (is (real= (get-in auction1 [:imports :c3])
+                 0.45))
+      (is (real= (get-in auction1 [:markets :m1])
+                 0.6))
+      (is (real= (get-in auction1 [:markets :m2])
+                 0.6))
+      (is (real= (get-in auction1 [:surplus :m1])
+                 0.4))
+      (is (real= (get-in auction1 [:surplus :m2])
+                 0.4))
 
-      (is (= auction2
-             {:imports {:c1 7 :c2 3 :c3 5}
-              :markets {:m1 12 :m2 12}
-              :surplus {:m1 5 :m2 4}}))
+      (is (real= (get-in auction2 [:imports :c1])
+                 0.35))
+      (is (real= (get-in auction2 [:imports :c2])
+                 0.15))
+      (is (real= (get-in auction2 [:imports :c3])
+                 0.25))
+      (is (real= (get-in auction2 [:markets :m1])
+                 0.6))
+      (is (real= (get-in auction2 [:markets :m2])
+                 0.6))
+      (is (real= (get-in auction2 [:surplus :m1])
+                 0.25))
+      (is (real= (get-in auction2 [:surplus :m2])
+                 0.2))
 
-      (is (= auction3
-             {:imports {:c1 13 :c2 13 :c3 13}
-              :markets {:m1 17 :m2 16}
-              :surplus {:m1 5 :m2 4}}))
+      (is (real= (get-in auction3 [:imports :c1])
+                 0.65))
+      (is (real= (get-in auction3 [:imports :c2])
+                 0.65))
+      (is (real= (get-in auction3 [:imports :c3])
+                 0.65))
+      (is (real= (get-in auction3 [:markets :m1])
+                 0.85))
+      (is (real= (get-in auction3 [:markets :m2])
+                 0.8))
+      (is (real= (get-in auction3 [:surplus :m1])
+                 0.25))
+      (is (real= (get-in auction3 [:surplus :m2])
+                 0.2))
 
-      (is (= auction4
-             {:imports {:c1 4 :c2 2 :c3 2}
-              :markets {:m1 12 :m2 12}
-              :surplus {:m1 3 :m2 2}}))
-      (is (= auction5
-             {:imports {:c1 2 :c2 1 :c3 0 :c4 0}
-              :markets {:m1 14 :m2 16 :m3 14}
-              :surplus {:m1 1 :m2 1 :m3 1}})))))
+      (is (real= (get-in auction4 [:imports :c1])
+                 0.2))
+      (is (real= (get-in auction4 [:imports :c2])
+                 0.1))
+      (is (real= (get-in auction4 [:imports :c3])
+                 0.1))
+      (is (real= (get-in auction4 [:markets :m1])
+                 0.6))
+      (is (real= (get-in auction4 [:markets :m2])
+                 0.6))
+      (is (real= (get-in auction4 [:surplus :m1])
+                 0.15))
+      (is (real= (get-in auction4 [:surplus :m2])
+                 0.1))
+
+      (is (real= (get-in auction5 [:imports :c1])
+                 0.117647059))
+      (is (real= (get-in auction5 [:imports :c2])
+                 0.058823529))
+      (is (real= (get-in auction5 [:imports :c3])
+                 0))
+      (is (real= (get-in auction5 [:imports :c4])
+                 0))
+
+      (is (real= (get-in auction5 [:markets :m1])
+                 0.823529412))
+      (is (real= (get-in auction5 [:markets :m2])
+                 0.941176471))
+      (is (real= (get-in auction5 [:markets :m3])
+                 0.823529412))
+
+      (is (real= (get-in auction5 [:surplus :m1])
+                 0.058823529))
+      (is (real= (get-in auction5 [:surplus :m2])
+                 0.058823529))
+      (is (real= (get-in auction5 [:surplus :m3])
+                 0.058823529)))))
 
 (deftest no-imports
   (testing "with non-competitive imports"
     (; Act
      let [auction (run {:c1 4 :c2 2 :c3 5 :c4 3}
                        {:m1 7 :m2 4 :m3 6}
-                       {:m1 {:c1 9 :c2 8 :c3 12 :c4 11}
-                        :m2 {:c1 16 :c2 15 :c3 17 :c4 17}
-                        :m3 {:c1 6 :c2 7 :c3 14 :c4 13}}
+                       {:m1 {:c1 0.529411765 :c2 0.470588235
+                             :c3 0.705882353 :c4 0.647058824}
+                        :m2 {:c1 0.941176471 :c2 0.882352941
+                             :c3 1 :c4 1}
+                        :m3 {:c1 0.352941176 :c2 0.411764706
+                             :c3 0.823529412 :c4 0.764705882}}
                        :summary)]
 
       ; Assert
-      (is (= auction
-             {:imports {:c1 3 :c2 4 :c3 0 :c4 0}
-              :markets {:m1 13 :m2 17 :m3 13}
-              :surplus {:m1 1 :m2 1 :m3 2}})))))
-
+      (is (real= (get-in auction [:imports :c1])
+                 0.176470588))
+      (is (real= (get-in auction [:imports :c2])
+                 0.235294118))
+      (is (real= (get-in auction [:imports :c3])
+                 0))
+      (is (real= (get-in auction [:imports :c4])
+                 0))
+      (is (real= (get-in auction [:markets :m1])
+                 0.764705882))
+      (is (real= (get-in auction [:markets :m2])
+                 1))
+      (is (real= (get-in auction [:markets :m3])
+                 0.764705882))
+      (is (real= (get-in auction [:surplus :m1])
+                 0.058823529))
+      (is (real= (get-in auction [:surplus :m2])
+                 0.058823529))
+      (is (real= (get-in auction [:surplus :m3])
+                 0.117647059)))))
 
 ;;; test grouping
 
