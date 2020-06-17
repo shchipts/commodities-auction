@@ -75,7 +75,7 @@
 (defn build
   "Builds correspondence between optimal import bundles and market price.
   Arguments to this function must include parameters of import supply curves,
-  market demand and total demand in the network of phosphorus markets. If
+  market demand and total demand in the network of commodity markets. If
   provided, search for demand set starts from the specified price level."
   ([market-parameters] (build market-parameters 0))
   ([{supply :supply
