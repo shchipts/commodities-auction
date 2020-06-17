@@ -43,7 +43,8 @@
                                  {:m1 {:demand 7
                                        :entry {:c1 11 :c2 13 :c3 12 :c4 11}}
                                   :m2 {:demand 4
-                                       :entry {:c1 12 :c2 14 :c3 17 :c4 17}}
+                                       :entry {:c1 12 :c2 14}}
+                                       ;:entry {:c1 12 :c2 14 :c3 17 :c4 17}}
                                   :m3 {:demand 6
                                        :entry {:c1 10 :c2 11 :c3 14 :c4 13}}}
                                  17)

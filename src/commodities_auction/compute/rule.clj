@@ -66,7 +66,7 @@
     (->> (map (fn [pars]
                 (update pars
                         :entry
-                        #(merge-with + % increments)))
+                        #(merge-with + % (select-keys increments (keys %)))))
               prev-markets)
          ((juxt identity
                 #(vec (map dp/rebuild % prev-demand-sets))))
@@ -119,7 +119,10 @@
   (let [iteratef (iteration supply)]
     (->> (vals markets)
          (map (fn [s x m]
-                (assoc m :supply s :total-demand x))
+                (->> (:entry m)
+                     keys
+                     (select-keys s)
+                     (#(assoc m :supply % :total-demand x))))
               (repeat supply)
               (repeat price-scale))
          iteratef

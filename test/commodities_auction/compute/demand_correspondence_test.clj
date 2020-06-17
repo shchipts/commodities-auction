@@ -206,6 +206,12 @@
                         {:supply {:c1 1 :c2 1}
                          :entry {:c1 1 :c2 5}
                          :total-demand 5}
+                        {:price 5})
+          ; skip imports with no market entry
+          p6 (price-inc [:c1 :c2]
+                        {:supply {:c1 1}
+                         :entry {:c1 1}
+                         :total-demand 5}
                         {:price 5})]
 
       ; Assert
@@ -213,7 +219,8 @@
       (is (= p2 1))
       (is (= p3 1))
       (is (= p4 6))
-      (is (= p5 3)))))
+      (is (= p5 3))
+      (is (= p6 3)))))
 
 (deftest rebuild-test
   (testing "Rebuild demand correspondence from previous iteration price level"

@@ -140,7 +140,9 @@
                  (< x %1) x
                  :else %1))
             nil
-            (filter #(< (get entry %) p) ids))))
+            (filter #(and (some? (get entry %))
+                          (< (get entry %) p))
+                    ids))))
 
 (defn rebuild
   "Rebuilds correspondence between optimal import bundles and market price
