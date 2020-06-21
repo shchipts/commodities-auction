@@ -8,7 +8,8 @@
 
 (ns ^{:doc "Demand correspondence for an individual market."
       :author "Anna Shchiptsova"}
- commodities-auction.compute.demand-correspondence)
+ commodities-auction.compute.demand-correspondence
+  (:require [clojure.set :as s]))
 
 (defn- entry-with-home
   "Appends domestic industry supply to imports."
@@ -131,18 +132,29 @@
   list of importers in the excess demand set, market parameters and
   current market price."
   [ids {entry :entry :as market-parameters} {p :price}]
-  (let [exit (exit market-parameters)]
-    (reduce #(let [x (if (< (get exit %2) p)
-                       (- p (get exit %2)) 1)]
-               (cond
-                 (= x 1) (reduced 1)
-                 (nil? %1) x
-                 (< x %1) x
-                 :else %1))
-            nil
-            (filter #(and (some? (get entry %))
-                          (< (get entry %) p))
-                    ids))))
+  (let [exit (exit market-parameters)
+        entry_ (entry-with-home market-parameters)
+        present (->> (filter (fn [[_ v]] (< v p)) entry_)
+                     (map first)
+                     set)]
+    (if (= present (set ids))
+      (->> (keys entry_)
+           (#(s/difference (set %) (set ids)))
+           vec
+           (select-keys entry_)
+           vals
+           (apply min)
+           (#(- (inc %) p)))
+      (->> (set ids)
+           (s/intersection present)
+           (reduce #(let [x (if (< (get exit %2) p)
+                              (- p (get exit %2)) 1)]
+                      (cond
+                        (= x 1) (reduced 1)
+                        (nil? %1) x
+                        (< x %1) x
+                        :else %1))
+                   nil)))))
 
 (defn rebuild
   "Rebuilds correspondence between optimal import bundles and market price

@@ -31,16 +31,15 @@
 
       ; Assert
       (is (real= (get-in auction1 [:imports :c1])
-                 [0 0.05 0.1 0.15	0.2	0.25 0.3 0.35	0.4	0.45]))
+                 [0 0.05 0.35	0.4	0.45]))
       (is (real= (get-in auction1 [:imports :c2])
-                 [0	0	0.05 0.1 0.15	0.2	0.25 0.3 0.3 0.35]))
+                 [0	0	0.3 0.3 0.35]))
       (is (real= (get-in auction1 [:imports :c3])
-                 [0 0.05 0.1 0.15	0.2	0.25 0.3 0.35	0.4	0.45]))
-
+                 [0 0.05 0.35	0.4	0.45]))
       (is (real= (get-in auction1 [:markets :m1])
-                 [0.2	0.2	0.25 0.3 0.35	0.4	0.45 0.5 0.55	0.6]))
+                 [0.2	0.2	0.5 0.55	0.6]))
       (is (real= (get-in auction1 [:markets :m2])
-                 [0.2	0.25 0.3 0.35	0.4	0.45 0.5 0.55	0.55 0.6]))
+                 [0.2	0.25 0.55	0.55 0.6]))
 
       (is (real= (get-in auction2 [:imports :c1])
                  [0 0.058823529	0.117647059]))
@@ -50,7 +49,6 @@
                  [0 0 0]))
       (is (real= (get-in auction2 [:imports :c4])
                  [0 0 0]))
-
       (is (real= (get-in auction2 [:markets :m1])
                  [0.764705882	0.764705882	0.823529412]))
       (is (real= (get-in auction2 [:markets :m2])

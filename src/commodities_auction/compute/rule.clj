@@ -12,17 +12,32 @@
   (:require [commodities-auction.compute.demand-correspondence :as dp]
             [commodities-auction.compute.market-functions :as mf]))
 
-(defn- record
+(defn- add-record
   "Appends current prices to accumulated results."
+  [prev prices demand-sets]
+  (->> (map :price demand-sets)
+       (conj (second prev))
+       (vector (conj (first prev) prices))))
+
+(defn- record
+  "Appends iteration prices to accumulated results
+  and accumulates sub-iteration results for further recording."
   ([] [[] []])
   ([prev supply demand-sets incs]
-   (->> (keys supply)
-        (map #(if (nil? (get incs %))
-                0 (get incs %)))
-        (conj (first prev))
-        (#(->> (map :price demand-sets)
-               (conj (second prev))
-               (vector %))))))
+   (let [export (first prev)
+         x (map #(if (nil? (get incs %))
+                   0 (get incs %))
+                (keys supply))
+         old? (and (> (count export) 1)
+                   (->> (last export)
+                        (vector x)
+                        (map #(keep pos? %))
+                        (apply =)))]
+     (if old?
+       (add-record (map pop prev)
+                   (map + x (last export))
+                   demand-sets)
+       (add-record prev x demand-sets)))))
 
 (defn- iteration
   "Returns auction state."
@@ -34,14 +49,16 @@
                           (record)
                           {}
                           demand-sets)))
-    ([markets iterations increments demand-sets]
+    ([markets
+      iterations
+      increments
+      demand-sets]
      (hash-map :demand-sets
                demand-sets
                :markets
                markets
                :excess-demand
-               (mf/excess-demand-set demand-sets
-                                     supply)
+               (mf/excess-demand-set demand-sets supply)
                :iterations
                (record iterations
                        supply

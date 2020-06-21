@@ -184,35 +184,48 @@
      let [p1 (price-inc [:c1]
                         {:supply {:c1 2 :c2 3 :c3 3}
                          :entry {:c1 1 :c2 1 :c3 1}
+                         :demand 5
                          :total-demand 5}
                         {:price 3})
           p2 (price-inc [:c1]
                         {:supply {:c1 1 :c2 3 :c3 3}
                          :entry {:c1 1 :c2 1 :c3 1}
+                         :demand 5
                          :total-demand 5}
                         {:price 3})
           p3 (price-inc [:c1 :c3]
                         {:supply {:c1 1 :c2 3 :c3 3}
                          :entry {:c1 1 :c2 1 :c3 1}
+                         :demand 5
                          :total-demand 5}
                         {:price 4})
           p4 (price-inc [:c1 :c2 :c3]
                         {:supply {:c1 2 :c2 3 :c3 1}
                          :entry {:c1 1 :c2 1 :c3 2}
+                         :demand 15
                          :total-demand 15}
                         {:price 10})
           ; skip imports with no market demand
           p5 (price-inc [:c1 :c2]
                         {:supply {:c1 1 :c2 1}
                          :entry {:c1 1 :c2 5}
+                         :demand 5
                          :total-demand 5}
                         {:price 5})
           ; skip imports with no market entry
           p6 (price-inc [:c1 :c2]
                         {:supply {:c1 1}
                          :entry {:c1 1}
+                         :demand 5
                          :total-demand 5}
-                        {:price 5})]
+                        {:price 5})
+          ; increase till next entry
+          p7 (price-inc [:c1 :c2]
+                        {:supply {:c1 5 :c2 5 :c3 3}
+                         :entry {:c1 0 :c2 0 :c3 4}
+                         :demand 6
+                         :total-demand 11}
+                        {:price 3})]
 
       ; Assert
       (is (= p1 1))
@@ -220,7 +233,8 @@
       (is (= p3 1))
       (is (= p4 6))
       (is (= p5 3))
-      (is (= p6 3)))))
+      (is (= p6 3))
+      (is (= p7 2)))))
 
 (deftest rebuild-test
   (testing "Rebuild demand correspondence from previous iteration price level"
