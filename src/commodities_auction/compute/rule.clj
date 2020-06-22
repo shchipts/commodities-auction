@@ -12,6 +12,19 @@
   (:require [commodities-auction.compute.demand-correspondence :as dp]
             [commodities-auction.compute.market-functions :as mf]))
 
+(defn- drop-while-with-counter
+  "Mimics clojure.core/drop-while with the counter + 1 for dropped items.
+  NB: pred must return false for some item in coll."
+  ([pred coll]
+   (let [step (fn [pred coll counter]
+                (let [s (seq coll)]
+                  (if (pred (first s))
+                    (recur pred (rest s) (inc counter))
+                    (list counter s))))]
+     ((juxt first
+            #(lazy-seq (second %)))
+      (step pred coll 1)))))
+
 (defn- add-record
   "Appends current prices to accumulated results."
   [prev prices demand-sets]
@@ -144,8 +157,11 @@
               (repeat price-scale))
          iteratef
          (iterate #(market-balance % iteratef))
-         (drop-while #(seq (:excess-demand %)))
-         first
-         :iterations
-         (transpose (keys supply)
-                    (keys markets)))))
+         (drop-while-with-counter #(seq (:excess-demand %)))
+         ((juxt (comp :iterations first second)
+                first))
+         ((fn [[v n]]
+            (-> (keys supply)
+                (transpose (keys markets)
+                           v)
+                (assoc :sub-iterations n)))))))

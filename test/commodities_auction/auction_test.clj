@@ -40,6 +40,8 @@
                  [0.2	0.2	0.5 0.55	0.6]))
       (is (real= (get-in auction1 [:markets :m2])
                  [0.2	0.25 0.55	0.55 0.6]))
+      (is (= (:sub-iterations auction1)
+             6))
 
       (is (real= (get-in auction2 [:imports :c1])
                  [0 0.058823529	0.117647059]))
@@ -54,7 +56,9 @@
       (is (real= (get-in auction2 [:markets :m2])
                  [0.882352941 0.882352941 0.941176471]))
       (is (real= (get-in auction2 [:markets :m3])
-                 [0.764705882	0.764705882	0.823529412])))))
+                 [0.764705882	0.764705882	0.823529412]))
+      (is (= (:sub-iterations auction2)
+             3)))))
 
 (deftest surpluses
   (testing "with surpluses as outcomes"
@@ -105,6 +109,8 @@
                  0.4))
       (is (real= (get-in auction1 [:surplus :m2])
                  0.4))
+      (is (= (:sub-iterations auction1)
+             6))
 
       (is (real= (get-in auction2 [:imports :c1])
                  0.35))
@@ -120,6 +126,8 @@
                  0.25))
       (is (real= (get-in auction2 [:surplus :m2])
                  0.2))
+      (is (= (:sub-iterations auction2)
+             8))
 
       (is (real= (get-in auction3 [:imports :c1])
                  0.65))
@@ -135,6 +143,8 @@
                  0.25))
       (is (real= (get-in auction3 [:surplus :m2])
                  0.2))
+      (is (= (:sub-iterations auction3)
+             8))
 
       (is (real= (get-in auction4 [:imports :c1])
                  0.2))
@@ -150,6 +160,8 @@
                  0.15))
       (is (real= (get-in auction4 [:surplus :m2])
                  0.1))
+      (is (= (:sub-iterations auction4)
+             5))
 
       (is (real= (get-in auction5 [:imports :c1])
                  0.117647059))
@@ -159,20 +171,20 @@
                  0))
       (is (real= (get-in auction5 [:imports :c4])
                  0))
-
       (is (real= (get-in auction5 [:markets :m1])
                  0.823529412))
       (is (real= (get-in auction5 [:markets :m2])
                  0.941176471))
       (is (real= (get-in auction5 [:markets :m3])
                  0.823529412))
-
       (is (real= (get-in auction5 [:surplus :m1])
                  0.058823529))
       (is (real= (get-in auction5 [:surplus :m2])
                  0.058823529))
       (is (real= (get-in auction5 [:surplus :m3])
-                 0.058823529)))))
+                 0.058823529))
+      (is (= (:sub-iterations auction5)
+             3)))))
 
 (deftest no-imports
   (testing "with non-competitive imports"
@@ -182,7 +194,6 @@
                        {:m1 {:c1 0.529411765 :c2 0.470588235
                              :c3 0.705882353 :c4 0.647058824}
                         :m2 {:c1 0.941176471 :c2 0.882352941}
-                             ;:c3 1 :c4 1}
                         :m3 {:c1 0.352941176 :c2 0.411764706
                              :c3 0.823529412 :c4 0.764705882}}
                        :summary)]

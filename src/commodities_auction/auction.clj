@@ -13,8 +13,9 @@
             [commodities-auction.compute.rule :as rule]))
 
 (defn- aggregate
-  "Returns auction results as import prices, market prices and surpluses."
-  [{imports :imports markets :markets}]
+  "Returns auction results as import prices, market prices, surpluses
+  and number of sub-iterations executed."
+  [{imports :imports markets :markets n :sub-iterations}]
   (->> (vals markets)
        (map (juxt last
                   #(- (last %)
@@ -26,7 +27,8 @@
                 (reduce-kv #(assoc %1 %2 (last %3))
                            {}
                            imports))))
-       (zipmap [:imports :markets :surplus])))
+       (zipmap [:imports :markets :surplus])
+       (#(assoc % :sub-iterations n))))
 
 (defn- transform
   "Returns markets' parameters with entry prices scaled to
@@ -47,15 +49,18 @@
 
 (defn- invert
   "Returns relative prices."
-  [prices scale]
-  (->> (vals prices)
-       (map (fn [m]
-              (->> (vals m)
-                   (map #(map (comp double /)
-                              %
-                              (repeat scale)))
-                   (zipmap (keys m)))))
-       (zipmap (keys prices))))
+  [results scale]
+  (let [prices (select-keys results
+                            [:imports :markets])]
+    (->> (vals prices)
+         (map (fn [m]
+                (->> (vals m)
+                     (map #(map (comp double /)
+                                %
+                                (repeat scale)))
+                     (zipmap (keys m)))))
+         (zipmap (keys prices))
+         (merge results))))
 
 (defn run
   "Finds equilibrium prices for differentiated commodity markets.
