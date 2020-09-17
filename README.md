@@ -19,7 +19,7 @@ Solution of the matching problem is a vector of export prices and a bundle of tr
 * Assumptions:  
   \- *Minimal WE*. Every agent is a price taker.  
   \- *Inelastic demand*. Imports can be substituted with domestic supply at higher prices.  
-  \- *Linear supply curves with identical slopes*. Every supplier bears an identical constant cost of adding one more unit of commodity to market inventory (valid for international and local suppliers).
+  \- *Linear supply curves with identical slopes*. Every supplier bears an identical constant cost of adding one more unit of commodity to market inventory (valid for international and local suppliers).  
   \- *Cost-efficiency of domestic industry*. Cost-efficiency of domestic industry is inverse proportional to the market share in global market demand. 
 
 * Equilibrium properties:  

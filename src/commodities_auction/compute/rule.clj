@@ -107,9 +107,9 @@
                       cur-demand-sets))))))
 
 (defn- transpose
-  "Returns results of every iteration as import prices and market prices."
+  "Returns results of every iteration as supplier prices and market prices."
   [supply-ids market-ids iterations]
-  (zipmap [:imports :markets]
+  (zipmap [:suppliers :markets]
           ((juxt #(% (first iterations)
                      supply-ids
                      (fn [v1 v2]
@@ -136,15 +136,15 @@
   "A price adjustment procedure to find equilibrium prices
   for differentiated commodity markets.
   Finds a minimal Walrasian equilibrium using the procedure of generalized
-  English auction (Gul & Stacchetti 2000). Imports are constrained by capacity
-  in `supply` and are differentiated by floor prices for market entry in
-  `markets` :entry. The individual market demand in `markets` :demand is
+  English auction (Gul & Stacchetti 2000). Export flows are constrained by
+  capacity in `supply` and are differentiated by floor prices for market entry
+  in `markets` :entry. The individual market demand in `markets` :demand is
   assumed to be inelastic. Import goods can be substituted with domestic
-  production at higher market prices. International suppliers and domestic 
-  industry players alter their supply volumes identically in response to the 
-  changes in market price. `price-scale` is an upper bound on market price 
-  corresponding to the case of only domestic supply. Returns a hash map with 
-  suppliers' prices (:imports) and market prices (:markets) for each auction 
+  production at higher market prices. International suppliers and domestic
+  industry players alter their supply volumes identically in response to the
+  changes in market price. `price-scale` is an upper bound on market price
+  corresponding to the case of only domestic supply. Returns a hash map with
+  supplier prices (:suppliers) and market prices (:markets) for each auction
   iteration."
   [supply markets price-scale]
   (let [iteratef (iteration supply)]

@@ -68,63 +68,63 @@
 
       ; Assert
       (is (= result1
-             {:imports {:c1 [0 1 7 8 9]
-                        :c2 [0 0 6 6 7]
-                        :c3 [0 1 7 8 9]}
+             {:suppliers {:c1 [0 1 7 8 9]
+                          :c2 [0 0 6 6 7]
+                          :c3 [0 1 7 8 9]}
               :markets {:m1 [4 4 10 11 12]
                         :m2 [4 5 11 11 12]}
               :sub-iterations 6}))
 
       (is (= result2
-             {:imports {:c1 [0 1 2 3 4 6 7]
-                        :c2 [0 0 0 1 1 3 3]
-                        :c3 [0 1 1 2 3 5 5]}
+             {:suppliers {:c1 [0 1 2 3 4 6 7]
+                          :c2 [0 0 0 1 1 3 3]
+                          :c3 [0 1 1 2 3 5 5]}
               :markets {:m1 [7 8 8 9  10 12 12]
                         :m2 [8 8 9 10 10 12 12]}
               :sub-iterations 8}))
 
       (is (= result3
-             {:imports {:c1 [0 13]
-                        :c2 [0 13]
-                        :c3 [0 13]}
+             {:suppliers {:c1 [0 13]
+                          :c2 [0 13]
+                          :c3 [0 13]}
               :markets {:m1 [12 17]
                         :m2 [12 16]}
               :sub-iterations 8}))
 
       (is (= result4
-             {:imports {:c1 [0 1 2 3 4]
-                        :c2 [0 0 1 1 2]
-                        :c3 [0 0 1 1 2]}
+             {:suppliers {:c1 [0 1 2 3 4]
+                          :c2 [0 0 1 1 2]
+                          :c3 [0 0 1 1 2]}
               :markets {:m1 [9  10 11 11 12]
                         :m2 [10 10 11 11 12]}
               :sub-iterations 5}))
 
       (is (= result5
-             {:imports {:c1 [0 1 2]
-                        :c2 [0 0 1]
-                        :c3 [0 0 0]
-                        :c4 [0 0 0]}
+             {:suppliers {:c1 [0 1 2]
+                          :c2 [0 0 1]
+                          :c3 [0 0 0]
+                          :c4 [0 0 0]}
               :markets {:m1 [13 13 14]
                         :m2 [15 15 16]
                         :m3 [13 13 14]}
               :sub-iterations 3}))
 
       (is (= result6
-             {:imports {:c1 [0 13]
-                        :c2 [0 13]
-                        :c3 [0 13]}
+             {:suppliers {:c1 [0 13]
+                          :c2 [0 13]
+                          :c3 [0 13]}
               :markets {:m1 [12 16]
                         :m2 [12 17]}
               :sub-iterations 8}))
 
       (is (= result7
-             {:imports {:c1 [0 2] :c2 [0 2] :c3 [0 0]}
+             {:suppliers {:c1 [0 2] :c2 [0 2] :c3 [0 0]}
               :markets {:m1 [4 6] :m2 [3 5]}
               :sub-iterations 2}))
 
       (is (= result8
-             {:imports {:c1 [0 1 4 4]
-                        :c2 [0 0 3 4]
-                        :c3 [0 1 4 5]}
+             {:suppliers {:c1 [0 1 4 4]
+                          :c2 [0 0 3 4]
+                          :c3 [0 1 4 5]}
               :markets {:m1 [3 4 7 7] :m2 [3 4 7 8]}
               :sub-iterations 4})))))

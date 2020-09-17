@@ -13,9 +13,9 @@
             [commodities-auction.compute.rule :as rule]))
 
 (defn- aggregate
-  "Returns auction results as import prices, market prices, surpluses
+  "Returns auction results as supplier prices, market prices, surpluses
   and number of sub-iterations executed."
-  [{imports :imports markets :markets n :sub-iterations}]
+  [{suppliers :suppliers markets :markets n :sub-iterations}]
   (->> (vals markets)
        (map (juxt last
                   #(- (last %)
@@ -26,8 +26,8 @@
           (conj coll
                 (reduce-kv #(assoc %1 %2 (last %3))
                            {}
-                           imports))))
-       (zipmap [:imports :markets :surplus])
+                           suppliers))))
+       (zipmap [:suppliers :markets :surplus])
        (#(assoc % :sub-iterations n))))
 
 (defn- transform
@@ -51,7 +51,7 @@
   "Returns relative prices."
   [results scale]
   (let [prices (select-keys results
-                            [:imports :markets])]
+                            [:suppliers :markets])]
     (->> (vals prices)
          (map (fn [m]
                 (->> (vals m)
@@ -65,9 +65,9 @@
 (defn run
   "Finds equilibrium prices for differentiated commodity markets.
   The algorithm will run the generalized English auction (Gul &
-  Stacchetti 2000) to balance interaction between different markets
-  concurrently utilizing resources from the same finite pool of 
-  international supply."
+  Stacchetti 2000) to balance interaction between different markets,
+  which concurrently utilizing resources from the same finite pool
+  of international supply."
   ([supply demand entry]
    (run supply demand entry nil))
   ([supply demand entry option]
