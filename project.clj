@@ -1,4 +1,4 @@
-(defproject org.iiasa/commodities-auction "1.0.0"
+(defproject org.iiasa/commodities-auction "1.0.1"
   :description "A special case of generalized English auction."
   :url "https://github.com/shchipts/commodities-auction"
   :scm {:name "git"

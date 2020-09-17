@@ -35,7 +35,7 @@ To include libraries add the following to your `:dependencies`:
 
 ### Leiningen
 ```clj
-[org.iiasa/commodities-auction "1.0.0"]
+[org.iiasa/commodities-auction "1.0.1"]
 ```
 
 ### Maven
@@ -44,7 +44,7 @@ To include libraries add the following to your `:dependencies`:
 <dependency>
   <groupId>org.iiasa</groupId>
   <artifactId>commodities-auction</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 </dependency>
 ```
 
