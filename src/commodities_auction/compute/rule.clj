@@ -133,8 +133,9 @@
                             coll))))))
 
 (defn adjust-prices
-  "A price adjustment procedure to find equilibrium prices
-  for differentiated commodity markets.
+  "A price adjustment procedure to find equilibrium prices for differentiated
+  commodity markets.
+
   Finds a minimal Walrasian equilibrium using the procedure of generalized
   English auction (Gul & Stacchetti 2000). Export flows are constrained by
   capacity in `supply` and are differentiated by floor prices for market entry

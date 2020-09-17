@@ -64,10 +64,15 @@
 
 (defn run
   "Finds equilibrium prices for differentiated commodity markets.
+
   The algorithm will run the generalized English auction (Gul &
   Stacchetti 2000) to balance interaction between different markets,
   which concurrently utilizing resources from the same finite pool
-  of international supply."
+  of international supply.
+
+  Gul, F., & Stacchetti, E. (2000). The English Auction with Differentiated
+  Commodities. Journal of Economic Theory, 92(1): 66-95.
+  https://doi.org/10.1006/jeth.1999.2580"
   ([supply demand entry]
    (run supply demand entry nil))
   ([supply demand entry option]
