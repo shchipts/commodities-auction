@@ -66,7 +66,8 @@
   "Finds equilibrium prices for differentiated commodity markets.
   The algorithm will run the generalized English auction (Gul &
   Stacchetti 2000) to balance interaction between different markets
-  concurrently utilizing the same import resources."
+  concurrently utilizing resources from the same finite pool of 
+  international supply."
   ([supply demand entry]
    (run supply demand entry nil))
   ([supply demand entry option]
