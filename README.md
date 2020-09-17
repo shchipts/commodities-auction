@@ -15,12 +15,12 @@ in which multiple objects (export supplies) are to be sold simultaneously, and e
   \- Demand by market  
   \- Trade cost by supplier and market - the floor price at which supplier has an incentive to sell commodity on a market
 
-* 'Assumptions' of the model:
+* 'Assumptions' of the model:  
   \- *Minimal WE*. Every agent is a price taker  
   \- *Inelastic demand*. Imports can be substituted with domestic supply at higher prices  
   \- *Linear supply curves with identical slope* Every supplier bears an identical constant cost of adding one more unit of commodity to market inventory (identical for international and local suppliers)
 
-* 'Solution of the matching problem' is a vector of suppliers' markups and a bundle of trade flows that satisfy the following properties:
+* 'Solution of the matching problem' is a vector of suppliers' markups and a bundle of trade flows that satisfy the following properties:  
   \- *Capacity constraints*. The sum of trade flows for any supplier does not exceed its supply capacity  
   \- *Utility maximization*. Market customers want to maximize their payoff  
   \- *Market clearence*. Supplier goods are unsold only if the markup over trade costs is zero
