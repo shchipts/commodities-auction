@@ -10,17 +10,17 @@ Suppliers differentiate price offers for distinct markets based on the cost of t
 The algorithm finds the minimal Walrasian equilibrium (WE) for the matching problem in the exchange economy with indivisible objects, 
 in which multiple objects (export supplies) are to be sold simultaneously, and each agent (market) wish to consume a bundle of different objects.
 
-* `Auction input parameters`:  
+* Auction input parameters:  
   \- *Capacity by supplier*.  
   \- *Demand by market*.  
   \- *Trade cost by supplier and market*. The floor price at which supplier has an incentive to sell commodity on a market.
 
-* `Assumptions`:  
+* Assumptions:  
   \- *Minimal WE*. Every agent is a price taker.  
   \- *Inelastic demand*. Imports can be substituted with domestic supply at higher prices.  
-  \- *Linear supply curves with identical slope*. Every supplier bears an identical constant cost of adding one more unit of commodity to market inventory (identical for international and local suppliers).
+  \- *Linear supply curves with identical slopes*. Every supplier bears an identical constant cost of adding one more unit of commodity to market inventory (identical for international and local suppliers).
 
-* `Equilibrium properties`:  
+* Equilibrium properties:  
   \- *Capacity constraints*. The sum of trade flows for any supplier does not exceed its supply capacity.  
   \- *Utility maximization*. Market customers want to maximize their payoff.  
   \- *Market clearence*. Supplier goods are unsold only if the markup over trade costs is zero.
