@@ -1,6 +1,7 @@
 # commodities-auction
 
 [![Clojars Project](https://img.shields.io/clojars/v/org.iiasa/commodities-auction.svg)](https://clojars.org/org.iiasa/commodities-auction)
+[![DOI](https://zenodo.org/badge/272511187.svg)](https://zenodo.org/badge/latestdoi/272511187)
 
 A special case of generalized English auction (Gul & Stacchetti 2000) for differentiated commodity markets.
 
